@@ -1,8 +1,8 @@
-app.background=rgb(170,215,81)
-startLabel = Label('False',200,200,visible=False)
+//Drawing the background of the game
+set background color as rgb(170,215,81)
 
-
-for x in range(20): #Draws the checkerboard
+//Draw checkerboard
+for x in range(20): 
     Line(0-20*(x%2),20*x+10,420-20*(x%2),20*x+10,dashes=(20,20),lineWidth=20,fill=rgb(162,209,73))
 Line(10,60,10,400,lineWidth=20,fill=rgb(87,138,52)) #Draws the borders
 Line(390,60,390,400,lineWidth=20,fill=rgb(87,138,52))
@@ -10,6 +10,7 @@ Line(20,70,380,70,lineWidth=20,fill=rgb(87,138,52))
 Line(20,390,380,390,lineWidth=20,fill=rgb(87,138,52))
 Line(0,30,400,30,lineWidth=60,fill=rgb(74,117,44))
 
+//Draw Apple
 appleShape = Group(Oval(308,192,9,12,rotateAngle=-15,fill='crimson'),Oval(313,192,9,12,rotateAngle=15,fill='crimson') #shape of apple
                     ,Oval(312,186,7,3,rotateAngle=-45,fill='green'),Line(310,188,310,182,fill='brown'))
 applex = Label(12,200,200,visible=False)
@@ -19,6 +20,13 @@ appleShape.centerY= appley.value*20 + 90
 appleCount = Label(0,55,30,fill='white',size=20)
 appleShapeCount = Group(Oval(28,32,9,12,rotateAngle=-15,fill='crimson'),Oval(33,32,9,12,rotateAngle=15,fill='crimson'), #shape of apple
                 Oval(32,26,7,3,rotateAngle=-45,fill=rgb(73,197,39)),Line(30,28,30,22,fill='brown'))
+
+
+
+
+
+
+
 
 
 squareColor = makeList(18,15)
@@ -38,6 +46,8 @@ snakey = [8, 8, 8]
 snakeEyes = Group(Circle(207,257,6,fill='cornflowerBlue'),Circle(207,257,4,fill='white'),Circle(207,257,2,fill='dodgerBlue'),
                 Circle(207,243,6,fill='cornflowerBlue'),Circle(207,243,4,fill='white'),Circle(207,243,2,fill='dodgerBlue'))
 
+//Starting Menu
+startLabel = Label('False',200,200,visible=False)
 startButton = Rect(200,220,160,160,fill='forestGreen',align='center')
 startTextTop = Label('Move mouse',200,200,size=20)
 startTextMiddle=Label('anywhere',200,220,size=20)
