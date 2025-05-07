@@ -1,0 +1,160 @@
+app.background=rgb(170,215,81)
+startLabel = Label('False',200,200,visible=False)
+
+
+for x in range(20): #Draws the checkerboard
+    Line(0-20*(x%2),20*x+10,420-20*(x%2),20*x+10,dashes=(20,20),lineWidth=20,fill=rgb(162,209,73))
+Line(10,60,10,400,lineWidth=20,fill=rgb(87,138,52)) #Draws the borders
+Line(390,60,390,400,lineWidth=20,fill=rgb(87,138,52))
+Line(20,70,380,70,lineWidth=20,fill=rgb(87,138,52))
+Line(20,390,380,390,lineWidth=20,fill=rgb(87,138,52))
+Line(0,30,400,30,lineWidth=60,fill=rgb(74,117,44))
+
+appleShape = Group(Oval(308,192,9,12,rotateAngle=-15,fill='crimson'),Oval(313,192,9,12,rotateAngle=15,fill='crimson') #shape of apple
+                    ,Oval(312,186,7,3,rotateAngle=-45,fill='green'),Line(310,188,310,182,fill='brown'))
+applex = Label(12,200,200,visible=False)
+appley = Label(8,200,200,visible=False)
+appleShape.centerX = applex.value*20 + 30
+appleShape.centerY= appley.value*20 + 90
+appleCount = Label(0,55,30,fill='white',size=20)
+appleShapeCount = Group(Oval(28,32,9,12,rotateAngle=-15,fill='crimson'),Oval(33,32,9,12,rotateAngle=15,fill='crimson'), #shape of apple
+                Oval(32,26,7,3,rotateAngle=-45,fill=rgb(73,197,39)),Line(30,28,30,22,fill='brown'))
+
+
+squareColor = makeList(18,15)
+
+for row in range(len(squareColor)):
+    for col in range(len(squareColor[row])):
+        square = Rect(20*row+20,20*col+80,20,20, fill='cornflowerBlue',visible = False,border = 'white')
+        squareColor[row][col] = square
+#direction: 0 = right, 1 = down, 2, = left, 3 = up
+dirxArr = [1,0,-1,0]
+diryArr = [0,1,0,-1]
+curDir = Label(0,200,200,visible=False)
+
+app.stepsPerSecond = 1.5
+snakex = [9, 8, 7]
+snakey = [8, 8, 8]
+snakeEyes = Group(Circle(207,257,6,fill='cornflowerBlue'),Circle(207,257,4,fill='white'),Circle(207,257,2,fill='dodgerBlue'),
+                Circle(207,243,6,fill='cornflowerBlue'),Circle(207,243,4,fill='white'),Circle(207,243,2,fill='dodgerBlue'))
+
+startButton = Rect(200,220,160,160,fill='forestGreen',align='center')
+startTextTop = Label('Move mouse',200,200,size=20)
+startTextMiddle=Label('anywhere',200,220,size=20)
+startTextBottom = Label('to Start!',200,245,size=20)
+#testLabel = Label("",60,30)
+
+
+def onStep():
+    if startLabel.value=='False':#Pulses Start Button
+        startButton.width=330-startButton.width
+        startButton.height=330-startButton.height
+        startButton.centerX=200
+        startButton.centerY=220
+        startTextTop.size=41-startTextTop.size
+        startTextMiddle.size=41-startTextMiddle.size
+        startTextBottom.size=41-startTextBottom.size
+
+    if startLabel.value=='True': #Advances to the next frame
+        tailx = snakex[len(snakex)-1]#records the tail of the snake
+        taily = snakey[len(snakey)-1]
+        squareColor[tailx][taily].visible=False#hides the square tail was last in
+        for x in range(len(snakex)-1,0,-1): #advances the snake
+            snakex[x] = snakex[x-1]
+            snakey[x] = snakey[x-1]
+        snakex[0] = snakex[0]+dirxArr[curDir.value] #calculates the position of the 
+        snakey[0] = snakey[0]+diryArr[curDir.value] #head of the snake according to user input
+        
+        if(snakex[0] >= 18 or snakex[0]<0 or snakey[0] >= 15 or snakey[0]<0): #checks if snake head out of bounds
+            app.stepsPerSecond = 0
+        for x in range(len(snakex)-1): #checks if snake head collides with other parts of the snake
+            if(snakex[0] == snakex[x+1] and snakey[0] == snakey[x+1]):
+                app.stepsPerSecond = 0
+                break
+        
+        if app.stepsPerSecond != 0: #if all checks pass, show the advanced head of the snake
+            squareColor[snakex[0]][snakey[0]].visible = True
+            snakeEyes.centerX = snakex[0]*20+30-3*dirxArr[curDir.value]
+            snakeEyes.centerY = snakey[0]*20+90-3*diryArr[curDir.value]
+            snakeEyes.rotateAngle=90*curDir.value
+            global applex, appley
+            #testLabel.value = str(applex)+ ' ' + str(appley)
+            if(snakex[0] == applex.value and snakey[0] == appley.value):#check if apple was eaten
+                #testLabel.value = 'Works'
+                snakex.append(tailx)
+                snakey.append(taily)
+                orderedDouble = generateApple()
+                applex.value = orderedDouble[0]
+                appley.value = orderedDouble[1]
+                appleShape.centerX=applex.value*20+30
+                appleShape.centerY=appley.value*20+90
+                squareColor[snakex[len(snakex)-1]][snakey[len(snakey)-1]].visible=True
+                appleCount.value+=1
+            if(appleCount.value == 5):
+                app.stepsPerSecond = 2.5
+            if(appleCount.value == 15):
+                app.stepsPerSecond = 3
+            if(appleCount.value == 30):
+                app.stepsPerSecond = 3.5
+            if(appleCount.value == 60):
+                app.stepsPerSecond = 4
+            if(appleCount.value == 135):
+                app.stepsPerSecond = 5
+    if app.stepsPerSecond == 0: #displays Game Over Screen
+        Rect(0,0,400,400,fill=gradient('red','lightCoral'),opacity=75)
+        Rect(200,220,160,160,fill='lightGreen',align = 'center')
+        #Text
+        Label('Game Over!',200,180,size=20)
+        Label('Your Score is: ' + str(appleCount.value),200,280,size=15)
+        #End Snake
+        Rect(120,225,75,15,fill='cornflowerBlue')
+        Circle(197,220,8,fill='cornflowerBlue')
+        Circle(197,220,5,fill='white')
+        Circle(198,220,3,fill='dodgerBlue')
+        Circle(189,222,8,fill='cornflowerBlue')
+        Circle(189,222,5,fill='white')
+        Circle(188,222,3,fill='dodgerBlue')
+        Rect(193,223,25,10,rotateAngle=-15,fill='cornflowerBlue')
+        Rect(193,235,25,5,rotateAngle=5,fill='cornflowerBlue')
+        #Dizzy-Stars
+        Oval(186,200,33,15,rotateAngle=-10)
+        Oval(185,199,29,15,fill='lightGreen',rotateAngle=-10)
+        Star(173,207,6,5,fill='yellow',rotateAngle=-25)
+        Star(188,207,6,5,fill='yellow',rotateAngle=-15)
+        Star(203,200,6,5,fill='yellow',rotateAngle=5)
+        #shape of apple
+        Oval(240,230,18,24,rotateAngle=-15,fill='crimson')
+        Oval(250,230,18,24,rotateAngle=15,fill='crimson')
+        Oval(249,218,14,6,rotateAngle=-45,fill='green')
+        Line(245,222,245,210,fill='brown')
+
+def onKeyPress(key):
+    if key == 'left' and curDir.value != 0:
+        curDir.value = 2
+    if key == 'right' and curDir.value != 2:
+        curDir.value = 0
+    if key == 'up' and curDir.value != 1:
+        curDir.value = 3
+    if key == 'down' and curDir.value != 3:
+        curDir.value = 1
+def generateApple():
+    randSquare = randrange(0,270-len(snakex))
+    counter = 0
+    for row in range(len(squareColor)):
+        for col in range(len(squareColor[row])):
+            if(squareColor[row][col].visible == False):
+                if counter == randSquare:
+                    return [row,col]
+                else:
+                    counter +=1
+
+def onMouseMove(mouseX, mouseY):
+    if startLabel.value=='False':
+        startLabel.value='True'
+        startButton.visible=False
+        startTextTop.visible=False
+        startTextMiddle.visible=False
+        startTextBottom.visible=False
+        squareColor[snakex[0]][snakey[0]].visible=True
+        squareColor[snakex[1]][snakey[1]].visible=True
+        squareColor[snakex[2]][snakey[2]].visible=True
