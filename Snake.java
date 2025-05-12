@@ -8,7 +8,7 @@ import java.util.Random;
 public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
 
     private final int TILE_SIZE = 20;
-    private final int ROWS = 18; // changed from 15
+    private final int ROWS = 15; // changed from 15
     private final int COLS = 18;
     private boolean gameRunning = false;
     
@@ -65,7 +65,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
     }
 
     private void drawStartScreen(Graphics g) {
-        g.setColor(Color.CYAN); //changed color for visibility
+        g.setColor(Color.GREEN); //changed color for visibility
         g.fillRect(80, 140, 240, 120);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20)); //changed font size to fit better
