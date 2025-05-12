@@ -72,8 +72,6 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         g.drawString("Move Mouse to Start!", 100, 200);
     }
 
-    @Override public void actionPerformed(ActionEvent e) {}
-    @Override public void keyPressed(KeyEvent e) {}
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameRunning) {
@@ -81,7 +79,8 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
             return;
         }
     }
-
+    @Override public void keyPressed(KeyEvent e) {}
+    
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
     @Override public void mouseMoved(MouseEvent e) {}
