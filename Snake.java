@@ -8,7 +8,7 @@ import java.util.Random;
 public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
 
     private final int TILE_SIZE = 20;
-    private final int ROWS = 15; // changed from 15
+    private final int ROWS = 18; // changed from 15
     private final int COLS = 18;
     private boolean gameRunning = false;
     
