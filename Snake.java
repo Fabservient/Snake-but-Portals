@@ -82,6 +82,9 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
 
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
+    @Override public void mouseMoved(MouseEvent e) {}
+    @Override public void mouseDragged(MouseEvent e) {}
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
         SnakeGame gamePanel = new SnakeGame();
