@@ -8,10 +8,10 @@ import java.util.Random;
 public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
 
     private final int TILE_SIZE = 20;
-    private final int ROWS = 18; // changed from 15
+    private final int ROWS = 15; // changed from 15
     private final int COLS = 18;
     private boolean gameRunning = false;
-    
+
     public SnakeGame() {
         setPreferredSize(new Dimension(400, 400));
         setBackground(new Color(170, 215, 81));
@@ -40,7 +40,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
                     g.setColor(evenColor);
                 else
                     g.setColor(oddColor);
-                g.fillRect(x * TILE_SIZE + 20, y * TILE_SIZE + 20, TILE_SIZE, TILE_SIZE);
+                g.fillRect(x * TILE_SIZE + 20, y * TILE_SIZE + 80, TILE_SIZE, TILE_SIZE);
             }
         }
     }
@@ -49,20 +49,25 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
     {
 
         g.setColor(new Color(87, 138, 52));
-        /** OLD CODE FOR BORDERS
-        g.fillRect(0, 60, 20, 340);//left
-        g.fillRect(380, 60, 20, 340);//right
-        g.fillRect(20, 60, 360, 20); //top
-        g.fillRect(20, 380, 360, 20);//bottom
-        //g.setColor(new Color(74, 117, 44));
-        //g.fillRect(0, 30, 400, 60);
-         **/
+        // OLD CODE FOR BORDERS
+         //g.fillRect(0, 60, 20, 340);//left
+        //g.fillRect(380, 60, 20, 340);//right
+        //g.fillRect(20, 60, 360, 20); //top
+         //g.fillRect(20, 380, 360, 20);//bottom
+
+         //g.setColor(new Color(74, 117, 44));
+         //g.fillRect(0, 30, 400, 60);
+
         //new code for borders
-        g.fillRect(0, 0, 20, 400);
-        g.fillRect(380, 0, 20, 400);
-        g.fillRect(20, 0, 360, 20);
-        g.fillRect(20, 380, 360, 20);
+        g.fillRect(0, 80, 20, 320); //left
+        g.fillRect(380, 80, 20, 320); //right
+        g.fillRect(0, 60, 400, 20); //top
+        g.fillRect(20, 380, 360, 20); //bottom
+        g.setColor(new Color(74,117,44));
+        g.fillRect(0,0,400,60);
+
     }
+
 
     private void drawStartScreen(Graphics g) {
         g.setColor(Color.GREEN); //changed color for visibility
@@ -72,6 +77,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         g.drawString("Move Mouse to Start!", 100, 200);
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameRunning) {
@@ -80,12 +86,12 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         }
     }
     @Override public void keyPressed(KeyEvent e) {}
-    
+
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
     @Override public void mouseMoved(MouseEvent e) {}
     @Override public void mouseDragged(MouseEvent e) {}
-    
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
         SnakeGame gamePanel = new SnakeGame();
