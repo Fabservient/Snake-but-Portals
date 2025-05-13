@@ -6,10 +6,15 @@ import java.util.Random;
 
 //This is experimental code
 public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
-
+    
+    private Timer timer;
     private final int TILE_SIZE = 20;
     private final int ROWS = 15; // changed from 15
     private final int COLS = 18;
+    private int direction = 0; // 0=right, 1=down, 2=left, 3=up
+    private ArrayList<Point> snake;
+    private Point apple;
+    private int score = 0;
     private boolean gameRunning = false;
 
     public SnakeGame() {
@@ -18,9 +23,15 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         setFocusable(true);
         addKeyListener(this);
         addMouseMotionListener(this);
+        snake = new ArrayList<>();
+        snake.add(new Point(9, 8));
+        snake.add(new Point(8, 8));
+        snake.add(new Point(7, 8));
+        timer = new Timer(500,this);
+        timer.start();
     }
 
-
+    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawCheckerboard(g);
