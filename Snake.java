@@ -94,7 +94,18 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
+        JButton startButton = new JButton("Start Game");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == button) {
+                    gameRunning = true; 
+                    // Add your desired action here
+                }
+            }
+        });
         SnakeGame gamePanel = new SnakeGame();
+        gamePanel.add(startButton);
         frame.add(gamePanel);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
