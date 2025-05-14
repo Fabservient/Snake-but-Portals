@@ -42,6 +42,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
             public void actionPerformed(ActionEvent e) {
                 gameRunning = true;
                 startButton.setVisible(false);
+                repaint();
             }
         });
     }
@@ -130,9 +131,9 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
     
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
-        JButton startButton = new JButton("Start Game");
+        //JButton startButton = new JButton("Start Game");
         SnakeGame gamePanel = new SnakeGame();
-        startButton.addActionListener(new ActionListener() {
+        /*startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == startButton) {
@@ -142,6 +143,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
             }
         });
         gamePanel.add(startButton);
+        */
         frame.add(gamePanel);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
