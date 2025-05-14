@@ -121,7 +121,14 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
             return;
         }
     }
-    @Override public void keyPressed(KeyEvent e) {}
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_LEFT && direction != 0) direction = 2;
+        if (key == KeyEvent.VK_RIGHT && direction != 2) direction = 0;
+        if (key == KeyEvent.VK_UP && direction != 1) direction = 3;
+        if (key == KeyEvent.VK_DOWN && direction != 3) direction = 1;
+    }
 
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
