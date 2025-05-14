@@ -47,7 +47,8 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         super.paintComponent(g);
         drawCheckerboard(g);
         drawBorders(g);
-
+        drawSnake(g);
+        
         if (!gameRunning) {
             drawStartScreen(g);
         }
