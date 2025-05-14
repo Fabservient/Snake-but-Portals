@@ -77,7 +77,15 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         g.setColor(Color.RED);
         g.fillOval(apple.x * TILE_SIZE + 20, apple.y * TILE_SIZE + 80, TILE_SIZE, TILE_SIZE);
     }
-    
+    /**private void drawApple(Graphics g,int x, int y)
+    {
+        g.setColor( new Color(220,50,50));
+        g.fillOval(x,y,20,20);
+        g.setColor (new Color(101,67,33));
+        g.fillRect(x + 9, y-3,2,7);
+
+    }
+    **/
     private void drawCheckerboard(Graphics g) {
         Color evenColor = new Color(162, 209, 73);
         Color oddColor = new Color(170, 215, 81);
