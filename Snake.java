@@ -4,12 +4,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-//JPanel used to create window.
-//Action Listener used to activate Timer
-//Key Listener used to accept arrow keys
+//This is experimental code
 public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
 
-    //Global Variables
     private Timer timer;
     private final int TILE_SIZE = 20;
     private final int ROWS = 15; // changed from 15
@@ -20,8 +17,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
     private int score = 0;
     private boolean gameRunning = false;
 
-    //Constructor
-   public SnakeGame() {
+    public SnakeGame() {
         setPreferredSize(new Dimension(400, 400));
         setBackground(new Color(170, 215, 81));
         setFocusable(true);
@@ -35,7 +31,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         timer.start();
         JButton startButton = new JButton("Start Game");
         setLayout(null);
-        startButton.setBounds(200, 200, 140, 40); // x, y, width, height
+        startButton.setBounds(130, 190, 140, 40); // x, y, width, height
         add(startButton);
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -47,18 +43,17 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         });
     }
 
-    //Redrawing the screen every 'tick'
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawCheckerboard(g);
         drawBorders(g);
-        drawSnake(g);
+
         if (!gameRunning) {
             drawStartScreen(g);
         }
     }
 
-    //Drawing various components of the game
     private void drawCheckerboard(Graphics g) {
         Color evenColor = new Color(162, 209, 73);
         Color oddColor = new Color(170, 215, 81);
@@ -78,13 +73,13 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
 
         g.setColor(new Color(87, 138, 52));
         // OLD CODE FOR BORDERS
-         //g.fillRect(0, 60, 20, 340);//left
+        //g.fillRect(0, 60, 20, 340);//left
         //g.fillRect(380, 60, 20, 340);//right
         //g.fillRect(20, 60, 360, 20); //top
-         //g.fillRect(20, 380, 360, 20);//bottom
+        //g.fillRect(20, 380, 360, 20);//bottom
 
-         //g.setColor(new Color(74, 117, 44));
-         //g.fillRect(0, 30, 400, 60);
+        //g.setColor(new Color(74, 117, 44));
+        //g.fillRect(0, 30, 400, 60);
 
         //new code for borders
         g.fillRect(0, 80, 20, 320); //left
@@ -92,27 +87,21 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         g.fillRect(0, 60, 400, 20); //top
         g.fillRect(20, 380, 360, 20); //bottom
         g.setColor(new Color(74,117,44));
-        g.fillRect(0,0,400,60);
+        g.fillRect(0,0,400,60); //top header
 
     }
 
 
     private void drawStartScreen(Graphics g) {
-        g.setColor(Color.GREEN); //changed color for visibility
-        g.fillRect(80, 140, 240, 120);
+        //g.setColor(Color.GREEN); //changed color for visibility
+        g.setColor(new Color(74,117,44));
+        g.fillRoundRect(80, 150, 240, 120,30,30);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20)); //changed font size to fit better
-        g.drawString("Move Mouse to Start!", 100, 200);
+        //g.drawString("Move Mouse to Start!", 100, 200);
     }
 
-    private void drawSnake(Graphics g) {
-        g.setColor(Color.BLUE);
-        for (Point p : snake) {
-            g.fillRect(p.x * TILE_SIZE + 20, p.y * TILE_SIZE + 80, TILE_SIZE, TILE_SIZE);
-        }
-    }
 
-    //What to do every tick
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameRunning) {
@@ -120,33 +109,23 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
             return;
         }
     }
-    //Accepting key presses
     @Override public void keyPressed(KeyEvent e) {}
 
-    //Unused Abstract Methods
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
     @Override public void mouseMoved(MouseEvent e) {}
     @Override public void mouseDragged(MouseEvent e) {}
-    
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
         //JButton startButton = new JButton("Start Game");
         SnakeGame gamePanel = new SnakeGame();
-        /*startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == startButton) {
-                    gamePanel.gameRunning = true; 
-                    // Add your desired action here
-                }
-            }
-        });
-        gamePanel.add(startButton);
-        */
+
+       // gamePanel.add(startButton);
         frame.add(gamePanel);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
     }
 }
