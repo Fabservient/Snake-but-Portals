@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 //This is experimental code
-public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
+public class SnakeGame extends JPanel implements ActionListener, KeyListener{
 
     private Timer timer;
     private final int TILE_SIZE = 20;
@@ -22,7 +22,6 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         setBackground(new Color(170, 215, 81));
         setFocusable(true);
         addKeyListener(this);
-        addMouseMotionListener(this);
         snake = new ArrayList<>();
         snake.add(new Point(9, 8));
         snake.add(new Point(8, 8));
@@ -125,9 +124,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
 
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
-    @Override public void mouseMoved(MouseEvent e) {}
-    @Override public void mouseDragged(MouseEvent e) {}
-
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
         //JButton startButton = new JButton("Start Game");
