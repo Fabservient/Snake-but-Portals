@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 //This is experimental code
 public class SnakeGame extends JPanel implements ActionListener, KeyListener{
@@ -40,14 +39,27 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
                 repaint();
             }
         });
+        spawnApple();
     }
 
-
+    private void spawnApple() {
+        while (true) {
+            int x = (int)(Math.random()*COLS);
+            int y = (int)(Math.random()*ROWS);
+            Point p = new Point(x, y);
+            if (!snake.contains(p)) {
+                apple = p;
+                break;
+            }
+        }
+    }
+    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawCheckerboard(g);
         drawBorders(g);
         drawSnake(g);
+        drawApple(g);
         
         if (!gameRunning) {
             drawStartScreen(g);
@@ -111,6 +123,8 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
             repaint();
             return;
         }
+        spawnApple();
+        repaint();
     }
     @Override
     public void keyPressed(KeyEvent e) {
