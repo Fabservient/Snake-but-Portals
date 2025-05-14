@@ -21,7 +21,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
     private boolean gameRunning = false;
 
     //Constructor
-    public SnakeGame() {
+   public SnakeGame() {
         setPreferredSize(new Dimension(400, 400));
         setBackground(new Color(170, 215, 81));
         setFocusable(true);
@@ -33,6 +33,17 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         snake.add(new Point(7, 8));
         timer = new Timer(500,this);
         timer.start();
+        JButton startButton = new JButton("Start Game");
+        setLayout(null);
+        startButton.setBounds(200, 200, 140, 40); // x, y, width, height
+        add(startButton);
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameRunning = true;
+                startButton.setVisible(false);
+            }
+        });
     }
 
     //Redrawing the screen every 'tick'
