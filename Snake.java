@@ -4,9 +4,12 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-//This is experimental code
+//JPanel used to create window.
+//Action Listener used to activate Timer
+//Key Listener used to accept arrow keys
 public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
-    
+
+    //Global Variables
     private Timer timer;
     private final int TILE_SIZE = 20;
     private final int ROWS = 15; // changed from 15
@@ -17,6 +20,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
     private int score = 0;
     private boolean gameRunning = false;
 
+    //Constructor
     public SnakeGame() {
         setPreferredSize(new Dimension(400, 400));
         setBackground(new Color(170, 215, 81));
@@ -31,7 +35,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         timer.start();
     }
 
-    
+    //Redrawing the screen every 'tick'
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawCheckerboard(g);
@@ -42,6 +46,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         }
     }
 
+    //Drawing various components of the game
     private void drawCheckerboard(Graphics g) {
         Color evenColor = new Color(162, 209, 73);
         Color oddColor = new Color(170, 215, 81);
@@ -94,7 +99,8 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
             g.fillRect(p.x * TILE_SIZE + 20, p.y * TILE_SIZE + 80, TILE_SIZE, TILE_SIZE);
         }
     }
-    
+
+    //What to do every tick
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameRunning) {
@@ -102,13 +108,15 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
             return;
         }
     }
+    //Accepting key presses
     @Override public void keyPressed(KeyEvent e) {}
 
+    //Unused Abstract Methods
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
     @Override public void mouseMoved(MouseEvent e) {}
     @Override public void mouseDragged(MouseEvent e) {}
-
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
         JButton startButton = new JButton("Start Game");
