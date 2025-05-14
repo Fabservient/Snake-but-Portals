@@ -36,7 +36,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         super.paintComponent(g);
         drawCheckerboard(g);
         drawBorders(g);
-
+        drawSnake(g);
         if (!gameRunning) {
             drawStartScreen(g);
         }
@@ -88,7 +88,13 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
         g.drawString("Move Mouse to Start!", 100, 200);
     }
 
-
+    private void drawSnake(Graphics g) {
+        g.setColor(Color.BLUE);
+        for (Point p : snake) {
+            g.fillRect(p.x * TILE_SIZE + 20, p.y * TILE_SIZE + 80, TILE_SIZE, TILE_SIZE);
+        }
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameRunning) {
