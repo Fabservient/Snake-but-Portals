@@ -84,16 +84,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
     {
 
         g.setColor(new Color(87, 138, 52));
-        // OLD CODE FOR BORDERS
-        //g.fillRect(0, 60, 20, 340);//left
-        //g.fillRect(380, 60, 20, 340);//right
-        //g.fillRect(20, 60, 360, 20); //top
-        //g.fillRect(20, 380, 360, 20);//bottom
-
-        //g.setColor(new Color(74, 117, 44));
-        //g.fillRect(0, 30, 400, 60);
-
-        //new code for borders
+        
         g.fillRect(0, 80, 20, 320); //left
         g.fillRect(380, 80, 20, 320); //right
         g.fillRect(0, 60, 400, 20); //top
