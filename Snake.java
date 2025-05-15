@@ -88,8 +88,15 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
 
      private void drawSnake(Graphics g) {
         g.setColor(Color.BLUE);
+        //Drawing the front
+        //Filling the 'middle'
         for (Point p : snake) {
-            g.fillRect(p.x * TILE_SIZE + 20, p.y * TILE_SIZE + 80, TILE_SIZE, TILE_SIZE);
+            g.fillRoundRect(p.x * TILE_SIZE + 22, p.y * TILE_SIZE + 82, TILE_SIZE-4, TILE_SIZE-4,15,15);
+        }
+        //Filling connections
+        for(int i = 0; i < snake.size()-1; i++){
+            Point p1 = snake.get(i); Point p2 = snake.get(i+1);
+            g.fillRect((p1.x+p2.x)*TILE_SIZE/2+22,(p1.y+p2.y)*TILE_SIZE/2+82,TILE_SIZE-4,TILE_SIZE-4);
         }
     }
 
