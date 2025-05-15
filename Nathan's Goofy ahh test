@@ -2,49 +2,133 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 //This is experimental code
-public class SnakeGame extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
+public class SnakeGame extends JPanel implements ActionListener, KeyListener{
 
+    private Timer timer;
     private final int TILE_SIZE = 20;
     private final int ROWS = 15; // changed from 15
     private final int COLS = 18;
+    private int direction = 0; // 0=right, 1=down, 2=left, 3=up
+    private final int[] xa = {1,0,-1,0};
+    private final int[] ya = {0,1,0,-1};
+    private ArrayList<Point> snake;
+    private Point apple1;
+    private Point apple2;
+    private int score = 0;
     private boolean gameRunning = false;
-    private static final int DELAY = 150;
-    Point apple1;
-    Point apple2;
-    char direction = 'R';
-    private ArrayList<Point> snakeParts = new ArrayList<Point>();
-    Timer timer;
-    Random random;
 
     public SnakeGame() {
         setPreferredSize(new Dimension(400, 400));
         setBackground(new Color(170, 215, 81));
         setFocusable(true);
         addKeyListener(this);
-        addMouseMotionListener(this);
-        for(int i = 6; i < 0; i--){
-            Point a = new Point(0, i);
-            snakeParts.add(a);
+        snake = new ArrayList<>();
+        snake.add(new Point(9, 8));
+        snake.add(new Point(8, 8));
+        snake.add(new Point(7, 8));
+        timer = new Timer(200,this);
+        timer.start();
+        JButton startButton = new JButton("Start Game");
+        setLayout(null);
+        startButton.setBounds(130, 190, 140, 40); // x, y, width, height
+        add(startButton);
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameRunning = true;
+                startButton.setVisible(false);
+                repaint();
+            }
+        });
+        spawnApple();
+    }
+
+    private void spawnApple() {
+        // Spawn apple1
+        while (true) {
+            int x1 = (int)(Math.random() * COLS);
+            int y1 = (int)(Math.random() * ROWS);
+            Point p1 = new Point(x1, y1);
+            if (!snake.contains(p1)) {
+                apple1 = p1;
+                break;
+            }
+        }
+
+        // Spawn apple2
+        while (true) {
+            int x2 = (int)(Math.random() * COLS);
+            int y2 = (int)(Math.random() * ROWS);
+            Point p2 = new Point(x2, y2);
+            if (!snake.contains(p2) && !p2.equals(apple1)) {
+                apple2 = p2;
+                break;
+            }
         }
     }
 
-    public void startGame() {
-        gameRunning = true;
-        timer = new Timer(DELAY, this);
-        timer.start();
+
+    private void updateTimer(){
+        if(score > 5){
+            timer.setDelay(150);
+        }
+        else if(score > 10){
+            timer.setDelay(125);
+        }
+        else if(score > 20){
+            timer.setDelay(100);
+        }
+        else if(score > 30){
+            timer.setDelay(75);
+        }
+        else if(score > 45){
+            timer.setDelay(50);
+        }
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawCheckerboard(g);
         drawBorders(g);
+        drawSnake(g);
+        drawApple(g);
 
         if (!gameRunning) {
             drawStartScreen(g);
         }
+    }
+
+    private void drawSnake(Graphics g) {
+        g.setColor(Color.BLUE);
+        // Draw body segments
+        for (Point p : snake) {
+            g.fillRoundRect(p.x * TILE_SIZE + 22, p.y * TILE_SIZE + 82, TILE_SIZE - 4, TILE_SIZE - 4, 15, 15);
+        }
+
+        // Draw connections only between adjacent segments
+        for (int i = 0; i < snake.size() - 1; i++) {
+            Point p1 = snake.get(i);
+            Point p2 = snake.get(i + 1);
+            int dx = Math.abs(p1.x - p2.x);
+            int dy = Math.abs(p1.y - p2.y);
+            if ((dx == 1 && dy == 0) || (dx == 0 && dy == 1)) {
+                g.fillRect((p1.x + p2.x) * TILE_SIZE / 2 + 22, (p1.y + p2.y) * TILE_SIZE / 2 + 82, TILE_SIZE - 4, TILE_SIZE - 4);
+            }
+        }
+    }
+
+
+    private void drawApple(Graphics g) {
+        g.setColor(new Color(220,50,50));
+        g.fillOval(apple1.x * TILE_SIZE + 22, apple1.y * TILE_SIZE + 80+3, TILE_SIZE-4, TILE_SIZE-5);
+        g.setColor (new Color(101,67,33));
+        g.fillRect(apple1.x * TILE_SIZE + 20 + 10, apple1.y * TILE_SIZE + 82,2,6);
+        g.setColor(new Color(220,50,50));
+        g.fillOval(apple2.x * TILE_SIZE + 22, apple2.y * TILE_SIZE + 80+3, TILE_SIZE-4, TILE_SIZE-5);
+        g.setColor (new Color(101,67,33));
+        g.fillRect(apple2.x * TILE_SIZE + 20 + 10, apple2.y * TILE_SIZE + 82,2,6);
     }
 
     private void drawCheckerboard(Graphics g) {
@@ -56,7 +140,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
                     g.setColor(evenColor);
                 else
                     g.setColor(oddColor);
-                g.fillRect(x * TILE_SIZE + 20, y * TILE_SIZE + 20, TILE_SIZE, TILE_SIZE);
+                g.fillRect(x * TILE_SIZE + 20, y * TILE_SIZE + 80, TILE_SIZE, TILE_SIZE);
             }
         }
     }
@@ -65,120 +149,85 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener, Mo
     {
 
         g.setColor(new Color(87, 138, 52));
-        /** OLD CODE FOR BORDERS
-         g.fillRect(0, 60, 20, 340);//left
-         g.fillRect(380, 60, 20, 340);//right
-         g.fillRect(20, 60, 360, 20); //top
-         g.fillRect(20, 380, 360, 20);//bottom
-         //g.setColor(new Color(74, 117, 44));
-         //g.fillRect(0, 30, 400, 60);
-         **/
-        //new code for borders
-        g.fillRect(0, 0, 20, 400);
-        g.fillRect(380, 0, 20, 400);
-        g.fillRect(20, 0, 360, 20);
-        g.fillRect(20, 380, 360, 20);
+
+        g.fillRect(0, 80, 20, 320); //left
+        g.fillRect(380, 80, 20, 320); //right
+        g.fillRect(0, 60, 400, 20); //top
+        g.fillRect(20, 380, 360, 20); //bottom
+        g.setColor(new Color(74,117,44));
+        g.fillRect(0,0,400,60); //top header
+
     }
+
 
     private void drawStartScreen(Graphics g) {
-        g.setColor(Color.GREEN); //changed color for visibility
-        g.fillRect(80, 140, 240, 120);
+        //g.setColor(Color.GREEN); //changed color for visibility
+        g.setColor(new Color(74,117,44));
+        g.fillRoundRect(80, 150, 240, 120,30,30);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20)); //changed font size to fit better
-        g.drawString("Move Mouse to Start!", 100, 200);
+        //g.drawString("Move Mouse to Start!", 100, 200);
     }
 
-    public void spawnApples(){
-        apple1 = new Point(random.nextInt((int) (COLS)) * TILE_SIZE, random.nextInt((int) (ROWS)) * TILE_SIZE);
-        apple2 = new Point(random.nextInt((int) (COLS)) * TILE_SIZE, random.nextInt((int) (ROWS)) * TILE_SIZE);
-        if(apple1.equals(apple2)){
-            spawnApples();
-        }
-        for (int i = 0; i < snakeParts.size(); i++){
-            if(snakeParts.get(i).equals(apple1)||snakeParts.get(i).equals(apple2)){
-                spawnApples();
-            }
-        }
-    }
-
-    public void moveSnake() {
-        for (int i = snakeParts.size(); i > 0; i--){
-            snakeParts.set(i, snakeParts.get(i-1));
-        }
-
-        Point b = snakeParts.get(0);
-        switch (direction) {
-            case 'U':
-                b.y -= TILE_SIZE;
-                snakeParts.set(0, b);
-                break;
-            case 'D':
-                b.y += TILE_SIZE;
-                snakeParts.set(0, b);
-                break;
-            case 'L':
-                b.x -= TILE_SIZE;
-                snakeParts.set(0, b);
-                break;
-            case 'R':
-                b.x += TILE_SIZE;
-                snakeParts.set(0, b);
-                break;
-        }
-    }
-
-    public void checkApple(){
-        if(snakeParts.get(0).equals(apple1))
-        {
-            // addPoint(); //Not yet added, is meant to add another point to snakeParts wherever it can
-            snakeParts.set(0, apple2);
-            spawnApples();
-        }
-        if(snakeParts.get(0).equals(apple2))
-        {
-            // addPoint();
-            snakeParts.set(0, apple1);
-            spawnApples();
-        }
+    private void drawEndScreen(Graphics g){
+        //AYAAN DO THIS
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (gameRunning) {
-            moveSnake();
-            checkApple();
-            // checkCollisions(); //Not yet added, is meant to check collisons
+        if (!gameRunning) {
+            repaint();
+            return;
+        }
+        Point head = new Point(snake.get(0));
+        head.x += xa[direction];
+        head.y += ya[direction];
+
+        if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS || snake.contains(head)) {
+            timer.stop();
+            repaint();
+            return;
+        }
+        snake.add(0,head);
+        if(head.equals(apple1)){
+            score++;
+            updateTimer();
+            snake.set(0, apple2);
+            spawnApple();
+        }
+        if(head.equals(apple2)){
+            score++;
+            updateTimer();
+            snake.set(0, apple1);
+            spawnApple();
+        }
+        else{
+            snake.remove(snake.size()-1);
         }
         repaint();
     }
-    @Override public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_LEFT:
-                if (direction != 'R') direction = 'L';
-                break;
-            case KeyEvent.VK_RIGHT:
-                if (direction != 'L') direction = 'R';
-                break;
-            case KeyEvent.VK_UP:
-                if (direction != 'D') direction = 'U';
-                break;
-            case KeyEvent.VK_DOWN:
-                if (direction != 'U') direction = 'D';
-                break;
-        }
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_LEFT && direction != 0) direction = 2;
+        if (key == KeyEvent.VK_RIGHT && direction != 2) direction = 0;
+        if (key == KeyEvent.VK_UP && direction != 1) direction = 3;
+        if (key == KeyEvent.VK_DOWN && direction != 3) direction = 1;
     }
 
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
-    @Override public void mouseMoved(MouseEvent e) {}
-    @Override public void mouseDragged(MouseEvent e) {}
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Snake Game");
+        //JButton startButton = new JButton("Start Game");
         SnakeGame gamePanel = new SnakeGame();
+
+        // gamePanel.add(startButton);
         frame.add(gamePanel);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
     }
 }
