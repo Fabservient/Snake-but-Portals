@@ -11,6 +11,8 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
     private final int ROWS = 15; // changed from 15
     private final int COLS = 18;
     private int direction = 0; // 0=right, 1=down, 2=left, 3=up
+    private final int[] xa = {1,0,-1,0};
+    private final int[] ya = {0,1,0,-1};
     private ArrayList<Point> snake;
     private Point apple;
     private int score = 0;
@@ -51,6 +53,24 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
                 apple = p;
                 break;
             }
+        }
+    }
+    
+    private void updateTimer(){
+        if(score > 5){
+            timer.setDelay(400);
+        }
+        else if(score > 10){
+            timer.setDelay(300);
+        }
+        else if(score > 20){
+            timer.setDelay(200);
+        }
+        else if(score > 30){
+            timer.setDelay(100);
+        }
+        else if(score > 45){
+            timer.setDelay(50);
         }
     }
     
@@ -118,14 +138,34 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         //g.drawString("Move Mouse to Start!", 100, 200);
     }
 
-
+    private void drawEndScreen(Graphics g){
+        //AYAAN DO THIS
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameRunning) {
             repaint();
             return;
         }
-        spawnApple();
+        Point head = new Point(snake.get(0));
+        head.x += xa[direction];
+        head.y += ya[direction];
+        
+         if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS || snake.contains(head)) {
+            timer.stop();
+            repaint();
+            return;
+        }
+        snake.add(0,head);
+        if(head.equals(apple)){
+            score++;
+            updateTimer();
+            spawnApple();
+        }
+        else{
+            snake.remove(snake.size()-1);
+        }
         repaint();
     }
     @Override
