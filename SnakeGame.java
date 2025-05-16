@@ -96,6 +96,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         drawSnake(g);
         drawApple(g);
 
+
         if (gameRunning == 0) {
             drawStartScreen(g);
         }
@@ -186,6 +187,9 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         g.fillRect(20, 380, 360, 20); //bottom
         g.setColor(new Color(74,117,44));
         g.fillRect(0,0,400,60); //top header
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD,30));
+        g.drawString("Score: " + String.valueOf(score),10,40);
 
     }
 
@@ -242,27 +246,34 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
     private void drawEndScreen(Graphics g){
         //AYAAN DO THIS\
         g.setColor(new Color(74,117,44));
+        g.fillRect(0,0,400,60); //top header
+        g.setColor(new Color(74,117,44));
         g.fillRoundRect(80, 150, 240, 100, 30, 30); //background box
         //snake
         g.setColor(Color.BLUE);
-        g.fillRoundRect(100, 200, 20, 20, 15, 15);
-        g.fillRoundRect(120, 200, 20, 20, 15, 15);
         g.fillRoundRect(140, 200, 20, 20, 15, 15);
         g.fillRoundRect(160, 200, 20, 20, 15, 15);
+        g.fillRoundRect(180, 200, 20, 20, 15, 15);
+        g.fillRoundRect(200, 200, 20, 20, 15, 15);
         //eyes
         g.setColor(Color.WHITE);
-        g.fillOval(165, 205, 6, 6);
-        g.fillOval(175, 205, 6, 6);
+        g.fillOval(205, 205, 6, 6);
+        g.fillOval(215, 205, 6, 6);
         //pupils
         g.setColor(Color.BLACK);
-        g.fillOval(166, 206, 4, 4);
-        g.fillOval(176, 206, 4, 4);
+        g.setFont(new Font("Arial",Font.BOLD,7));
+        //g.fillOval(206, 206, 4, 4);
+        //g.fillOval(216, 206, 4, 4);
+        g.drawString("x",206,210);
+        g.drawString("x",216,210);
+
+
         //apple
         g.setColor(new Color(220,50,50));
-        g.fillOval(190, 200, 20, 20);
+        g.fillOval(230, 200, 20, 20);
         //stem
         g.setColor(new Color(101,67,33));
-        g.fillRect(200, 195, 2, 6);
+        g.fillRect(240, 195, 2, 6);
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD,20));
         g.drawString("Game Over", 93,175);
@@ -318,6 +329,10 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         if (key == KeyEvent.VK_RIGHT && direction != 2) nextDirection = 0;
         if (key == KeyEvent.VK_UP && direction != 1) nextDirection = 3;
         if (key == KeyEvent.VK_DOWN && direction != 3) nextDirection = 1;
+        if (key == KeyEvent.VK_A && direction != 0) nextDirection = 2;
+        if (key == KeyEvent.VK_D && direction != 2) nextDirection = 0;
+        if (key == KeyEvent.VK_W && direction != 1) nextDirection = 3;
+        if (key == KeyEvent.VK_S && direction != 3) nextDirection = 1;
     }
 
 
