@@ -18,7 +18,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
     private Point apple1;
     private Point apple2;
     private int score = 0;
-    private boolean gameRunning = false;
+    private int gameRunning = 0;// 0 = start 1 = running 2 = end
 
     public SnakeGame() {
         setPreferredSize(new Dimension(400, 400));
@@ -33,12 +33,12 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         timer.start();
         JButton startButton = new JButton("Start Game");
         setLayout(null);
-        startButton.setBounds(130, 190, 140, 40); // x, y, width, height
+        startButton.setBounds(130, 250, 140, 40); // Moved button down by changing y from 190 to 250
         add(startButton);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameRunning = true;
+                gameRunning = 1;
                 startButton.setVisible(false);
                 repaint();
             }
@@ -96,8 +96,12 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         drawSnake(g);
         drawApple(g);
 
-        if (!gameRunning) {
+        if (gameRunning == 0) {
             drawStartScreen(g);
+        }
+        else if (gameRunning == 2)
+        {
+            drawEndScreen(g);
         }
     }
 
@@ -125,12 +129,12 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
                 g.fillOval(p1.x*TILE_SIZE+22, p1.y*TILE_SIZE+82,TILE_SIZE-4,TILE_SIZE-4);
                 g.fillOval(p2.x*TILE_SIZE+22, p2.y*TILE_SIZE+82,TILE_SIZE-4,TILE_SIZE-4);
                 if(!p1.equals(snake.get(0))){
-                    Point p0 = snake.get(i-1); 
+                    Point p0 = snake.get(i-1);
                     g.fillRect((p1.x + p0.x) * TILE_SIZE / 2 + 22, (p1.y + p0.y) * TILE_SIZE / 2 + 82, TILE_SIZE - 4, TILE_SIZE - 4);
                 }
             }
         }
-        
+
         //draw eyes + head
         int hcx = snake.get(0).x*TILE_SIZE+30+5*xa[direction];
         int hcy = snake.get(0).y*TILE_SIZE+90+5*ya[direction];
@@ -142,7 +146,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         g.fillOval(hcx+6*xa[direction]+5*ya[direction]-2,hcy+6*ya[direction]+5*xa[direction]-2,4,4);
         g.fillOval(hcx+6*xa[direction]-5*ya[direction]-2,hcy+6*ya[direction]-5*xa[direction]-2,4,4);
         //draw eyes
-        
+
     }
 
 
@@ -187,21 +191,91 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
 
 
     private void drawStartScreen(Graphics g) {
-        //g.setColor(Color.GREEN); //changed color for visibility
         g.setColor(new Color(74,117,44));
-        g.fillRoundRect(80, 150, 240, 120,30,30);
+        g.fillRoundRect(80, 150, 240, 160, 30, 30);
+
+        // snake code
+        //snake
+        g.setColor(Color.BLUE);
+        g.fillRoundRect(100, 200, 20, 20, 15, 15);
+        g.fillRoundRect(120, 200, 20, 20, 15, 15);
+        g.fillRoundRect(140, 200, 20, 20, 15, 15);
+        g.fillRoundRect(160, 200, 20, 20, 15, 15);
+        //eyes
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 20)); //changed font size to fit better
-        //g.drawString("Move Mouse to Start!", 100, 200);
+        g.fillOval(165, 205, 6, 6);
+        g.fillOval(175, 205, 6, 6);
+        //pupils
+        g.setColor(Color.BLACK);
+        g.fillOval(166, 206, 4, 4);
+        g.fillOval(176, 206, 4, 4);
+        //apple
+        g.setColor(new Color(220,50,50));
+        g.fillOval(190, 200, 20, 20);
+        //stem
+        g.setColor(new Color(101,67,33));
+        g.fillRect(200, 195, 2, 6);
+        //arrow keys
+        g.setColor(new Color(180, 180, 180));
+        // up box
+        g.fillRoundRect(250, 185, 28, 28, 6, 6);
+        // other boxes
+        g.fillRoundRect(220, 215, 28, 28, 6, 6); // left
+        g.fillRoundRect(250, 215, 28, 28, 6, 6); // down
+        g.fillRoundRect(280, 215, 28, 28, 6, 6); // right
+
+        g.setColor(Color.WHITE);
+        // actual up triangle
+        g.fillPolygon(new int[]{256, 264, 272}, new int[]{205, 191, 205}, 3);
+        // down triangle
+        g.fillPolygon(new int[]{256, 264, 272}, new int[]{223, 237, 223}, 3);
+        // left triangle
+        g.fillPolygon(new int[]{240, 226, 240}, new int[]{221, 229, 237}, 3);
+        // right triangle
+        g.fillPolygon(new int[]{288, 302, 288}, new int[]{221, 229, 237}, 3);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Snake but with Portals", 93,175);
+
     }
 
     private void drawEndScreen(Graphics g){
-        //AYAAN DO THIS
+        //AYAAN DO THIS\
+        g.setColor(new Color(74,117,44));
+        g.fillRoundRect(80, 150, 240, 100, 30, 30); //background box
+        //snake
+        g.setColor(Color.BLUE);
+        g.fillRoundRect(100, 200, 20, 20, 15, 15);
+        g.fillRoundRect(120, 200, 20, 20, 15, 15);
+        g.fillRoundRect(140, 200, 20, 20, 15, 15);
+        g.fillRoundRect(160, 200, 20, 20, 15, 15);
+        //eyes
+        g.setColor(Color.WHITE);
+        g.fillOval(165, 205, 6, 6);
+        g.fillOval(175, 205, 6, 6);
+        //pupils
+        g.setColor(Color.BLACK);
+        g.fillOval(166, 206, 4, 4);
+        g.fillOval(176, 206, 4, 4);
+        //apple
+        g.setColor(new Color(220,50,50));
+        g.fillOval(190, 200, 20, 20);
+        //stem
+        g.setColor(new Color(101,67,33));
+        g.fillRect(200, 195, 2, 6);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD,20));
+        g.drawString("Game Over", 93,175);
+        g.drawString("Score: " + String.valueOf(score),220,175);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!gameRunning) {
+        if (gameRunning == 0) {
+            repaint();
+            return;
+        }
+        if (gameRunning == 2) {
             repaint();
             return;
         }
@@ -214,7 +288,8 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         head.y += ya[direction];
 
         if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS || snake.contains(head)) {
-            timer.stop();
+            //timer.stop();
+            gameRunning = 2;
             repaint();
             return;
         }
