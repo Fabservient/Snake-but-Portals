@@ -133,18 +133,6 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
             if ((dx == 1 && dy == 0) || (dx == 0 && dy == 1)) {
                 g.fillOval((p1.x + p2.x) * SUB_TILE_SIZE / 2 + 22, (p1.y + p2.y) * SUB_TILE_SIZE / 2 + 82, SUB_TILE_SIZE - 4, SUB_TILE_SIZE - 4);
             }
-            else{
-                g.setColor(new Color(182, 95, 207));
-                g.fillOval(p1.x*TILE_SIZE+19, p1.y*TILE_SIZE+79,TILE_SIZE+2,TILE_SIZE+2);
-                g.fillOval(p2.x*TILE_SIZE+19, p2.y*TILE_SIZE+79,TILE_SIZE+2,TILE_SIZE+2);
-                g.setColor(Color.BLUE);
-                g.fillOval(p1.x*TILE_SIZE+22, p1.y*TILE_SIZE+82,TILE_SIZE-4,TILE_SIZE-4);
-                g.fillOval(p2.x*TILE_SIZE+22, p2.y*TILE_SIZE+82,TILE_SIZE-4,TILE_SIZE-4);
-                if(!p1.equals(snake.get(0))){
-                    Point p0 = snake.get(i-1);
-                    g.fillRect((p1.x + p0.x) * TILE_SIZE / 2 + 22, (p1.y + p0.y) * TILE_SIZE / 2 + 82, TILE_SIZE - 4, TILE_SIZE - 4);
-                }
-            }
         }
 
         //draw eyes + head
