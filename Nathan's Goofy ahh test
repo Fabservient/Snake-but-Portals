@@ -21,7 +21,9 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
     private final int[] ya = {0,1,0,-1};
     private ArrayList<Point> snake;
     private Point apple1;
+    private Point applesub1;
     private Point apple2;
+    private Point applesub2;
     private int score = 0;
     private int gameRunning = 0;// 0 = start 1 = running 2 = end
 
@@ -57,8 +59,10 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
             int x1 = (int)(Math.random() * COLS);
             int y1 = (int)(Math.random() * ROWS);
             Point p1 = new Point(x1, y1);
+            Point ps1 = new Point(x1*SHRINK_FACTOR, y1*SHRINK_FACTOR);
             if (!snake.contains(p1)) {
                 apple1 = p1;
+                applesub1 = ps1;
                 break;
             }
         }
@@ -68,8 +72,10 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
             int x2 = (int)(Math.random() * COLS);
             int y2 = (int)(Math.random() * ROWS);
             Point p2 = new Point(x2, y2);
+            Point ps2 = new Point(x2*SHRINK_FACTOR, y2*SHRINK_FACTOR);
             if (!snake.contains(p2) && !p2.equals(apple1)) {
                 apple2 = p2;
+                applesub2 = ps2;
                 break;
             }
         }
@@ -145,13 +151,6 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         int hcx = snake.get(0).x*TILE_SIZE+30+5*xa[direction];
         int hcy = snake.get(0).y*TILE_SIZE+90+5*ya[direction];
         g.fillRoundRect(hcx-8,hcy-8,TILE_SIZE-4,TILE_SIZE-4,15,15);
-        g.setColor(Color.WHITE);
-        g.fillOval(hcx+5*xa[direction]+5*ya[direction]-3,hcy+5*ya[direction]+5*xa[direction]-3,6,6);
-        g.fillOval(hcx+5*xa[direction]-5*ya[direction]-3,hcy+5*ya[direction]-5*xa[direction]-3,6,6);
-        g.setColor(Color.BLACK);
-        g.fillOval(hcx+6*xa[direction]+5*ya[direction]-2,hcy+6*ya[direction]+5*xa[direction]-2,4,4);
-        g.fillOval(hcx+6*xa[direction]-5*ya[direction]-2,hcy+6*ya[direction]-5*xa[direction]-2,4,4);
-        //draw eyes
 
     }
 
@@ -323,16 +322,16 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
             return;
         }
         snake.add(0,head);
-        if(head.equals(apple1)){
+        if(head.equals(applesub1)){
             score++;
             updateTimer();
-            snake.set(0, apple2);
+            snake.set(0, applesub2);
             spawnApple();
         }
-        if(head.equals(apple2)){
+        if(head.equals(applesub2)){
             score++;
             updateTimer();
-            snake.set(0, apple1);
+            snake.set(0, applesub1);
             spawnApple();
         }
         else{
